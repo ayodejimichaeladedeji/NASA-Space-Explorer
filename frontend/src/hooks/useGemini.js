@@ -7,34 +7,40 @@ export function useRandomFacts() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setData(null);
-    setError(null);
-    setLoading(true);
-
     let isCancelled = false;
+    let retryTimeout;
 
-    const handler = setTimeout(() => {
-      async function loadData() {
-        try {
-          const apodData = await getRandomFacts();
-          if (!isCancelled) {
-            setData(apodData);
-          }
-        } catch (err) {
-          if (!isCancelled) {
-            setError(err);
-          }
-        } finally {
-          if (!isCancelled) {
-            setLoading(false);
-          }
+    async function loadData() {
+      if (isCancelled) return;
+
+      setData(null);
+      setError(null);
+      setLoading(true);
+
+      try {
+        const factsData = await getRandomFacts();
+        if (!isCancelled) {
+          setData(factsData);
+          setError(null);
+        }
+      } catch (err) {
+        if (!isCancelled) {
+          setError(err);
+          retryTimeout = setTimeout(loadData, 10000);
+        }
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
         }
       }
-      loadData();
-      // Cleanup in case component unmounts - test this after implementing routing.
-      // return () => { isCancelled = true;};
-    }, 5000);
-    return () => { clearTimeout(handler); isCancelled = true;}
+    }
+
+    loadData();
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(retryTimeout);
+    };
   }, []);
 
   return { data, loading, error };

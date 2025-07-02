@@ -16,7 +16,6 @@ function ApodCard() {
   if (error) {
     return (
       <div className="glass-effect rounded-xl overflow-hidden h-80 flex items-center justify-center">
-        {/* <p className="text-red-400 text-center">Error: {error.message}</p> */}
         <Shimmer className="w-full h-full rounded-xl" />
       </div>
     );

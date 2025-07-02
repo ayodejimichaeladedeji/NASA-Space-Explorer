@@ -10,27 +10,22 @@ class GeminiService {
   async generateSpaceFacts() {
     const prompt = buildGenerateFactPrompt(spaceTopics);
 
-    try {
-      const response = await this.gemini.models.generateContent({
-        model: process.env.GEMINI_MODEL,
-        contents: [{ text: prompt }],
-        config: {
-          temperature: 1,
-        },
-      });
-      const text = response.text;
-      const cleaned = text
-        .replace(/^```json\s*/i, "")
-        .replace(/```$/, "")
-        .trim();
-      return JSON.parse(cleaned);
-    } catch (error) {
-      console.error(`Error generating facts:`, error);
-      return spaceTopics.map((t) => ({
-        topic: t,
-        fact: `Error generating fact for ${t}.`,
-      }));
-    }
+    const response = await this.gemini.models.generateContent({
+      model: process.env.GEMINI_MODEL,
+      contents: [{ text: prompt }],
+      config: {
+        temperature: 0.9,
+        topP: 0.9,
+        frequencyPenalty: 1.0,
+        presencePenalty: 0.5
+      },
+    });
+    const text = response.text;
+    const cleaned = text
+      .replace(/^```json\s*/i, "")
+      .replace(/```$/, "")
+      .trim();
+    return JSON.parse(cleaned);
   }
 }
 

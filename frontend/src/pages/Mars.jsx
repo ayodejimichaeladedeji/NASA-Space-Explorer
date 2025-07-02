@@ -14,10 +14,8 @@ function MarsPage() {
   const [fetchOption, setFetchOption] = useState("latest_photos");
   const [selectedRover, setSelectedRover] = useState(null);
 
-  // First, get active rovers
   const { data: roversData, loading: roversLoading, error: roversError } = useActiveRovers();
 
-  // Set random rover when rovers data loads
   useEffect(() => {
     if (roversData && roversData.length > 0 && !selectedRover) {
       const randomIndex = Math.floor(Math.random() * roversData.length);
@@ -26,14 +24,11 @@ function MarsPage() {
     }
   }, [roversData, selectedRover]);
 
-  // Then use the selected rover to fetch photos
   const { data: latestPhotosData, loading: photosLoading, error: photosError } = useLatestPhotos(selectedRover);
 
-  // Combine loading and error states
   const loading = roversLoading || photosLoading;
   const error = roversError || photosError;
 
-  // Get the actual data or fallback to empty arrays
   const rovers = roversData || [];
   const latest_photos = latestPhotosData || { latest_photos: [] };
 
@@ -101,7 +96,6 @@ function MarsPage() {
 
     return (
       <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-        {/* All images in a consistent grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {images.map((image, index) =>
             isShimmer ? (
@@ -119,7 +113,6 @@ function MarsPage() {
     );
   }
 
-  // Shimmer card component that matches ImageCard dimensions
   function ShimmerCard({ index = 0 }) {
     const getDelayClass = (index) => {
       const delays = ["", "delay-75", "delay-150", "delay-300", "delay-500"];

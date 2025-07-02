@@ -33,15 +33,18 @@ export function buildGenerateFactPrompt(topics) {
     },
   ];
 
-  let prompt = `You are an expert at generating concise and fascinating space facts. Your task is to generate exactly one 
-                interesting fact for each of the provided topics. The output MUST be a JSON array of objects. Each object 
-                in the array MUST have two keys: "topic" (string) and "fact" (string). Do NOT include any introductory or 
-                concluding text, or any formatting outside the JSON array. Here are examples of the desired output format:`;
+  let prompt = `You are an expert at generating concise, *highly unique*, and genuinely fascinating space facts.
+                Your primary task is to generate exactly one *completely distinct* and *absolutely non-repetitive* interesting fact for each of the provided topics.
+                Each fact should be surprising, lesser-known, or offer a new perspective.
+                The output MUST be a JSON array of objects. Each object in the array MUST have two keys: "topic" (string) and "fact" (string).
+                Do NOT include any introductory or concluding text, or any formatting outside the JSON array.
+                It is critical that the facts for different topics are not variations of the same core information.
+                Here are examples of the desired output format, illustrating distinctness:`;
 
   examples.forEach((example) => {
-    prompt += `Topics: ${JSON.stringify(example.input)}\n Output:\n\`\`\`json\n${
-      example.output
-    }\n\`\`\`\n\n`;
+    prompt += `Topics: ${JSON.stringify(
+      example.input
+    )}\n Output:\n\`\`\`json\n${example.output}\n\`\`\`\n\n`;
   });
 
   prompt += `Topics: ${JSON.stringify(topics)}\nOutput:\n\`\`\`json\n[\n`;
