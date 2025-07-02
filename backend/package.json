@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "NODE_ENV=production NODE_OPTIONS=--no-deprecation node ./src/server.js",
+    "start:dev": "NODE_ENV=development NODE_OPTIONS=--no-deprecation nodemon ./src/server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.7.0",
+    "axios": "^1.10.0",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "type": "module"
+}

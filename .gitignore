@@ -1,0 +1,76 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.vscode
+
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+build/
+dist-ssr/
+.next/
+out/
+coverage/
+.temp/
+.tmp/
+
+# OS / System files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables (anywhere in the project)
+**/.env
+**/.env.*
+
+# Runtime data
+.pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REACT/VITE build cache
+.cache/
+vite.config.ts
+
+# Optional TypeScript
+*.tsbuildinfo
+
+# Optional testing
+jest.config.js
+test-results/
+cypress/videos/
+cypress/screenshots/
+
+# Optional debug logs
+*.log
+debug.log*
+error.log*
+
+# Ignore local config overrides
+*.local
+
+# Ignore coverage reports
+coverage/
+.nyc_output/
