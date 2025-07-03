@@ -63,11 +63,8 @@ function BrowseByDatePage() {
   }
 
   function handleDateChange(selectedDate) {
-  // Delay hiding the date input to allow iOS to register the change
-  setTimeout(() => {
     setDate(selectedDate);
-  }, 10000); // 100ms is enough for iOS to register the change
-}
+  }
 
   useEffect(() => {
     if (roverInformation?.photo_manifest?.photos) {
@@ -141,7 +138,7 @@ function BrowseByDatePage() {
               />
             )}
 
-            {roverName && !date && (
+            {roverName && (
               <>
                 {loadingManifest ? (
                   <div className="flex flex-col items-center space-y-2">
@@ -163,13 +160,15 @@ function BrowseByDatePage() {
                     </button>
                   </div>
                 ) : (
-                  <DateInput
-                    id="date"
-                    name="Date"
-                    date={date}
-                    onChange={handleDateChange}
-                    maxDate={roverInformation?.photo_manifest?.max_date}
-                  />
+                  <div className={date ? "hidden" : ""}>
+                    <DateInput
+                      id="date"
+                      name="Date"
+                      date={date}
+                      onChange={handleDateChange}
+                      maxDate={roverInformation?.photo_manifest?.max_date}
+                    />
+                  </div>
                 )}
               </>
             )}
