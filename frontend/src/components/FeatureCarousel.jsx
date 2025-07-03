@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-function FeatureCarousel({ images = [], roverName, carouselUrl }) {
+function FeatureCarousel({ images = [], roverName }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -20,7 +20,6 @@ function FeatureCarousel({ images = [], roverName, carouselUrl }) {
 
   return (
     <div className="glass-effect relative rounded-xl overflow-hidden card-hover-effect cursor-pointer h-80">
-      <Link to={carouselUrl}>
         <img
           src={currentItem.imgUrl}
           loading="lazy"
@@ -41,7 +40,6 @@ function FeatureCarousel({ images = [], roverName, carouselUrl }) {
             {roverName}
           </div>
         </div>
-      </Link>
     </div>
   );
 }

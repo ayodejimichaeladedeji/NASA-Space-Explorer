@@ -55,7 +55,6 @@ function MarsCarousel() {
       <FeatureCarousel
         images={images}
         roverName={`Latest Images From The ${roverName} Rover`}
-        carouselUrl="/mars-rovers"
       />
 
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl flex items-center justify-center opacity-100 md:opacity-0 group-hover:opacity-100">

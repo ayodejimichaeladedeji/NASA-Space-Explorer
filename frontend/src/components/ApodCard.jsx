@@ -27,8 +27,7 @@ function ApodCard() {
     <div className="relative group cursor-pointer">
       <FeatureCard 
         imageUrl={data.url || data.hdurl} 
-        title={data.title} 
-        cardUrl="/apod"
+        title={data.title}
         className="transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95"
       />
 
