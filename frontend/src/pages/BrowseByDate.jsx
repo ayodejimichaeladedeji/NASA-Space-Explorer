@@ -64,13 +64,16 @@ function BrowseByDatePage() {
 
   function handleDateChange(selectedDate) {
     setDate(selectedDate);
+  }
+
+  useEffect(() => {
     if (roverInformation?.photo_manifest?.photos) {
       let availableCameras = roverInformation.photo_manifest.photos.find(
-        (x) => x.earth_date === selectedDate
+        (x) => x.earth_date === date
       );
       setCameras(availableCameras?.cameras || []);
     }
-  }
+  }, [roverInformation, date]);
 
   function handleCameraSelect(camera) {
     setSelectedCamera(camera);
@@ -140,7 +143,9 @@ function BrowseByDatePage() {
                 {loadingManifest ? (
                   <div className="flex flex-col items-center space-y-2">
                     <Shimmer className="h-12 w-64 rounded-xl" />
-                    <p className="text-sm text-gray-400">Loading rover information...</p>
+                    <p className="text-sm text-gray-400">
+                      Loading rover information...
+                    </p>
                   </div>
                 ) : errorManifest ? (
                   <div className="text-center">
@@ -248,7 +253,11 @@ function BrowseByDatePage() {
         <section className="mb-12">
           {loadingPhotos && (
             <div className="px-4 sm:px-6 lg:px-0">
-              <SmartGrid images={Array(6).fill({})} isShimmer={true} cardType="mars" />
+              <SmartGrid
+                images={Array(6).fill({})}
+                isShimmer={true}
+                cardType="mars"
+              />
             </div>
           )}
 
@@ -289,7 +298,7 @@ function BrowseByDatePage() {
             )}
         </section>
       </div>
-      <BackButton isDark={isDark}/>
+      <BackButton isDark={isDark} />
     </>
   );
 }

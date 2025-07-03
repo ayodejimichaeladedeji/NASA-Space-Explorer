@@ -4,7 +4,6 @@ import { ThemeContext } from "../context/ThemeContext";
 function DateInput({ id, name, date, onChange, maxDate }) {
   const { isDark } = useContext(ThemeContext);
 
-  // Normalize date: if it's a valid YYYY-MM-DD string, use it; else undefined
   const normalizedDate =
     typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined;
 
