@@ -49,8 +49,7 @@ Follow these instructions to get a copy of the project up and running on your lo
     npm install
     ```
 
-#### Configuration
-BACKEND
+#### Configuration - BACKEND
 Create a `.env` file in the `backend` directory and add the following environment variables. Replace the placeholder values with your actual API keys and other configurations:
 
 ```env
@@ -64,7 +63,8 @@ GEMINI_MODEL=gemini-2.0-flash
 
 THE GEMINI MODEL CAN BE CONFIGURED TO USE ANY MODEL OF YOUR CHOICE
 
-FRONTEND
+#### Configuration - FRONTEND
 
+```env
 Create a `.env` file in the `frontend` directory and add the following environment variables. Replace the placeholder values with your actual API keys and other configurations:
 VITE_API_BASE_URL=URL_AND_PORT_WHERE_YOUR_BACKEND_IS_RUNNING_ON
