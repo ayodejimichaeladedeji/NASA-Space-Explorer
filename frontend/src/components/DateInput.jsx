@@ -4,8 +4,7 @@ import { ThemeContext } from "../context/ThemeContext";
 function DateInput({ id, name, date, onChange, maxDate }) {
   const { isDark } = useContext(ThemeContext);
 
-  const normalizedDate =
-    typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined;
+  const isValidDate = typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date);
 
   return (
     <div className="flex flex-col gap-3 sm:gap-2 w-[280px] sm:w-80 sm:min-w-48 mx-auto">
@@ -19,7 +18,7 @@ function DateInput({ id, name, date, onChange, maxDate }) {
         type="date"
         id={id}
         max={maxDate}
-        value={normalizedDate}
+        {...(isValidDate ? { value: date } : { defaultValue: "" })}
         onChange={(e) => onChange(e.target.value)}
         className={`w-full px-2 py-2 sm:py-2 sm:px-4 border rounded-xl bg-white/10 text-base transition-all backdrop-blur-sm
           duration-300 focus:outline-none focus:border-teal-400 focus:ring-3 focus:ring-teal-400/30 disabled:opacity-50 
