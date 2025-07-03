@@ -62,6 +62,7 @@ NODE_ENV=development
 GEMINI_MODEL=gemini-2.0-flash
 
 THE GEMINI MODEL CAN BE CONFIGURED TO USE ANY MODEL OF YOUR CHOICE
+```
 
 #### Configuration - FRONTEND
 
