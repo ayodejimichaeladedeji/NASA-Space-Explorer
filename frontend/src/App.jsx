@@ -10,6 +10,7 @@ const ApodPage = lazy(() => import("./pages/Apod"));
 const MarsPage = lazy(() => import("./pages/Mars"));
 const BrowseBySolPage = lazy(() => import("./pages/BrowseBySol"));
 const BrowseByDatePage = lazy(() => import("./pages/BrowseByDate"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { path: "/mars-rovers", element: <MarsPage /> },
       { path: "/mars-rovers/sol", element: <BrowseBySolPage /> },
       { path: "/mars-rovers/earth_date", element: <BrowseByDatePage /> },
+      { path: "*", element: <PageNotFound /> },
     ],
   },
 ]);
@@ -36,4 +38,3 @@ function App() {
 }
 
 export default App;
-
