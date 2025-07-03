@@ -7,6 +7,7 @@ function HeroCard({ imageUrl, title, cardUrl }) {
         <img
           src={imageUrl}
           alt={title}
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-cover card-image-hover"
         />
 

@@ -3,11 +3,13 @@ import Layout from "./components/Layout";
 import { ThemeProvider } from "./context/ThemeContext";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import HomePage from "./pages/Home";
-import ApodPage from "./pages/Apod";
-import MarsPage from "./pages/Mars";
-import BrowseBySolPage from "./pages/BrowseBySol";
-import BrowseByDatePage from "./pages/BrowseByDate";
+import { lazy, Suspense } from "react";
+
+const HomePage = lazy(() => import("./pages/Home"));
+const ApodPage = lazy(() => import("./pages/Apod"));
+const MarsPage = lazy(() => import("./pages/Mars"));
+const BrowseBySolPage = lazy(() => import("./pages/BrowseBySol"));
+const BrowseByDatePage = lazy(() => import("./pages/BrowseByDate"));
 
 const router = createBrowserRouter([
   {
@@ -26,9 +28,12 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <Suspense fallback={<p>Loading</p>}>
+        <RouterProvider router={router} />
+      </Suspense>
     </ThemeProvider>
   );
 }
 
 export default App;
+

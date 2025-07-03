@@ -23,6 +23,7 @@ function FeatureCarousel({ images = [], roverName, carouselUrl }) {
       <Link to={carouselUrl}>
         <img
           src={currentItem.imgUrl}
+          loading="lazy"
           alt={roverName || "NASA Image"}
           className="absolute inset-0 w-full h-full object-cover card-image-hover"
         />

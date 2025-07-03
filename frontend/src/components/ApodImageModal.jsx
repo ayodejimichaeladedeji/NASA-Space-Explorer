@@ -179,6 +179,7 @@ function ApodImageModal({ image, isOpen, onClose }) {
             {image.media_type === "image" ? (
               <img
                 src={imageUrl}
+                loading="lazy"
                 alt={image.title || "APOD Image"}
                 className={`${
                   window.innerWidth >= 1280
