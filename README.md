@@ -1,7 +1,5 @@
 # NASA Space Explorer
 
-## Your Gateway to the Cosmos
-
 ### Project Overview
 
 The NASA Space Explorer is an interactive web application designed to bring the wonders of space closer to you. It serves as a dynamic portal to explore official NASA data and discover fascinating facts about the universe, making space education accessible and engaging. This project integrates directly with official NASA APIs for live data and leverages the advanced capabilities of the Gemini LLM for unique factual content, providing a rich and responsive user experience.
