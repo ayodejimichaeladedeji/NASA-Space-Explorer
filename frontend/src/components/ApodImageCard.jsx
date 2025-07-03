@@ -26,7 +26,6 @@ function ApodImageCard({ image, index = 0 }) {
     return null;
   }
 
-  const hasHdUrl = image.hdurl && image.hdurl !== image.url;
   const imageUrl = image.url || image.hdurl;
 
   const handleViewDetails = (e) => {
@@ -56,11 +55,6 @@ function ApodImageCard({ image, index = 0 }) {
               loading="lazy"
               className="w-full h-full object-cover transition-all duration-700 ease-out 
                        group-hover:scale-110 group-hover:brightness-110"
-              onError={(e) => {
-                if (hasHdUrl && e.target.src !== image.url) {
-                  e.target.src = image.url;
-                }
-              }}
             />
           ) : (
             <div
@@ -85,16 +79,6 @@ function ApodImageCard({ image, index = 0 }) {
             >
               {formatDate(image.date)}
             </div>
-
-            {hasHdUrl && (
-              <div
-                className="bg-emerald-500/80 backdrop-blur-sm px-2 py-1 
-                            rounded-full text-xs font-bold text-white
-                            border border-emerald-400/50 shadow-lg"
-              >
-                HD
-              </div>
-            )}
           </div>
         </div>
 

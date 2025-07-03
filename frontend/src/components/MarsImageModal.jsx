@@ -98,9 +98,9 @@ function MarsImageModal({ image, isOpen, onClose }) {
           </button>
 
           <div className="absolute bottom-4 left-4 bg-black/50 text-white px-3 py-2 rounded-lg text-sm opacity-75 hover:opacity-100 transition-opacity">
-            <div>{image.rover?.name || 'Mars Rover'} - Sol {image.sol || 'N/A'}</div>
-            <div>{formatDate(image.earth_date)}</div>
-            <div>{image.camera?.full_name || image.camera?.name || 'Camera'}</div>
+            <div>{`Rover: ` + image.rover?.name} - Sol: {image.sol}</div>
+            <div>{`Camera: ` + image.camera?.full_name || image.camera?.name}</div>
+            <div>{`Date: ` + formatDate(image.earth_date)}</div>
           </div>
         </div>
       </div>

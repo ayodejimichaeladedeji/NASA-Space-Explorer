@@ -1,5 +1,4 @@
 import loadEnv from './config/loadEnv.js';
-
 loadEnv();
 
 const { default: app } = await import('./app.js');

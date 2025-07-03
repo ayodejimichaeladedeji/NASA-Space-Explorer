@@ -2,8 +2,9 @@ import { useRef, useEffect, useState, useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 
 import Banner from "../components/Banner";
+import Shimmer from "../components/Shimmer";
+import SmartGrid from "../components/SmartGrid";
 import BackButton from "../components/BackButton";
-import MarsImageCard from "../components/MarsImageCard";
 import RoverTypeSelector from "../components/RoverTypeSelector";
 
 import {
@@ -11,14 +12,6 @@ import {
   useRoverManifest,
   usePhotosBySol,
 } from "../hooks/useMarsRovers";
-
-function Shimmer({ className = "" }) {
-  return (
-    <div
-      className={`animate-pulse bg-gradient-to-r from-white/20 via-white/30 to-white/20 bg-[length:200%_100%] animate-shimmer ${className}`}
-    ></div>
-  );
-}
 
 function BrowseBySolPage() {
   const { isDark } = useContext(ThemeContext);
@@ -84,114 +77,6 @@ function BrowseBySolPage() {
 
   function handleCameraSelect(camera) {
     setSelectedCamera(camera);
-  }
-
-  function ShimmerCard({ index = 0 }) {
-    const getDelayClass = (index) => {
-      const delays = ["", "delay-75", "delay-150", "delay-300", "delay-500"];
-      return delays[Math.min(index, delays.length - 1)] || "delay-500";
-    };
-
-    const animationDelay = getDelayClass(index);
-
-    return (
-      <div
-        className={`bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden
-                      transition-all duration-500 ease-out animate-fade-in-up ${animationDelay}`}
-      >
-        <div className="relative h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 overflow-hidden">
-          <Shimmer className="w-full h-full" />
-        </div>
-
-        <div className="p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4">
-          {/* Title shimmer */}
-          <Shimmer className="h-6 sm:h-7 lg:h-8 w-3/4 rounded" />
-
-          <div className="space-y-2">
-            <Shimmer className="h-4 w-full rounded" />
-            <Shimmer className="h-4 w-5/6 rounded" />
-            <Shimmer className="h-4 w-4/5 rounded" />
-          </div>
-
-          <div className="pt-2">
-            <Shimmer className="h-10 sm:h-12 w-32 sm:w-36 rounded-xl" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function renderSmartGrid(images, isShimmer = false) {
-    const count = images.length;
-
-    if (count === 1) {
-      return (
-        <div className="flex justify-center">
-          <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl">
-            {isShimmer ? (
-              <ShimmerCard index={0} />
-            ) : (
-              <MarsImageCard image={images[0]} index={0} />
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    if (count === 2) {
-      return (
-        <div className="flex flex-col lg:flex-row justify-center gap-4 sm:gap-6 lg:gap-8">
-          {images.map((image, index) => (
-            <div
-              key={isShimmer ? index : `${image.id || image.sol}-${index}`}
-              className="w-full max-w-md lg:max-w-lg xl:max-w-xl"
-            >
-              {isShimmer ? (
-                <ShimmerCard index={index} />
-              ) : (
-                <MarsImageCard image={image} index={index} />
-              )}
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    if (count === 3) {
-      return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {images.map((image, index) =>
-            isShimmer ? (
-              <ShimmerCard key={index} index={index} />
-            ) : (
-              <MarsImageCard
-                key={`${image.id || image.sol}-${index}`}
-                image={image}
-                index={index}
-              />
-            )
-          )}
-        </div>
-      );
-    }
-
-    return (
-      <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {images.map((image, index) =>
-            isShimmer ? (
-              <ShimmerCard key={index} index={index} />
-            ) : (
-              <MarsImageCard
-                key={`${image.id || image.sol}-${index}`}
-                image={image}
-                index={index}
-              />
-            )
-          )}
-        </div>
-      </div>
-    );
   }
 
   if (loadingRovers) {
@@ -384,7 +269,7 @@ function BrowseBySolPage() {
         <section className="mb-12">
           {loadingPhotos && (
             <div className="px-4 sm:px-6 lg:px-0">
-              {renderSmartGrid(Array(6).fill({}), true)}
+              <SmartGrid images={Array(6).fill({})} isShimmer={true} cardType="mars" />
             </div>
           )}
 
@@ -404,7 +289,7 @@ function BrowseBySolPage() {
 
           {!loadingPhotos && !errorPhotos && photos?.photos?.length > 0 && (
             <div className="px-4 sm:px-6 lg:px-0">
-              {renderSmartGrid(photos.photos)}
+              <SmartGrid images={photos.photos} cardType="mars" />
             </div>
           )}
 

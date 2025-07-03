@@ -14,7 +14,7 @@ function RandomFactCard() {
   const { data: factsData, loading: factsLoading, error: factsError } = useRandomFacts();
   const { data: apodData, loading: apodLoading, error: apodError} = useApod({ start_date, end_date });
 
-  const [currentFactIndex, setCurrentFactIndex] = useState(0);
+  const [currentFactIndex, setCurrentFactIndex] = useState(Math.floor(Math.random() * 100));
   const [currentApodIndex, setCurrentApodIndex] = useState(0);
 
   useEffect(() => {

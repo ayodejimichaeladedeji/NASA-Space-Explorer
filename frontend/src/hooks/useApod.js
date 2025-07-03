@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getApod } from "../services/http.js";
+import { getApod } from "../services/apodService.js";
 
 export function useApod({ date, start_date, end_date }) {
   const [data, setData] = useState(null);
@@ -16,15 +16,15 @@ export function useApod({ date, start_date, end_date }) {
       setData(null);
       setError(null);
       setLoading(true);
-      
-      if ((start_date && !end_date) || (!start_date && end_date)) {
-        setError(new Error("Both start_date and end_date must be provided together."));
+
+      if ((start_date && !end_date)) {
+        setError("Please select an end date");
         setLoading(false);
         return;
       }
 
-      if (date && (start_date || end_date)) {
-        setError(new Error("Provide either a single date OR a date range, not both."));
+      if ((!start_date && end_date)) {
+        setError("Please select a start date.");
         setLoading(false);
         return;
       }

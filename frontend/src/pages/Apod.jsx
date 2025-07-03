@@ -1,18 +1,19 @@
 import { useApod } from "../hooks/useApod";
-import { useMemo, useState, useContext } from "react";
+import { useMemo, useState, useEffect, useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 
 import Banner from "../components/Banner";
-import Shimmer from "../components/Shimmer";
 import DateInput from "../components/DateInput";
-import ApodImageCard from "../components/ApodImageCard";
+import SmartGrid from "../components/SmartGrid";
 import BackButton from "../components/BackButton";
+import ApodImageCard from "../components/ApodImageCard";
 import DateTypeSelector from "../components/DateTypeSelector";
 
 function ApodPage() {
   const { isDark } = useContext(ThemeContext);
 
   const [date, setDate] = useState("");
+  const [maxDate, setMaxDate] = useState();
   const [end_date, setEndDate] = useState("");
   const [start_date, setStartDate] = useState("");
   const [dateMode, setDateMode] = useState("single");
@@ -25,9 +26,7 @@ function ApodPage() {
     setDate("");
     setStartDate("");
     setEndDate("");
-    // if (mode === "single") {
-    //   setShowDefault(true);
-    // }
+    setShowDefault(true);
   }
 
   const handleDateChange = (value) => {
@@ -45,20 +44,19 @@ function ApodPage() {
     setShowDefault(false);
   };
 
-  const normalizedData = useMemo(() => {
+  const normalisedData = useMemo(() => {
     if (!data) return [];
     return Array.isArray(data) ? data : [data];
   }, [data]);
 
-   const maxDate = useMemo(() => {
-    if (normalizedData.length > 0) {
-      return normalizedData[normalizedData.length - 1].date;
-    }
-    
-    return undefined;
-  }, [normalizedData]);
+  useEffect(() => {
+    const latest = normalisedData[normalisedData.length - 1]?.date;
+    if (!latest) return;
 
-  console.log(maxDate);
+    if (!maxDate || latest > maxDate) {
+      setMaxDate(latest);
+    }
+  }, [normalisedData, maxDate]);
 
   const hasSearched = date || (start_date && end_date);
   const shouldShowResults = hasSearched && !loading && !error;
@@ -78,114 +76,6 @@ function ApodPage() {
       return Math.min(diffDays, 15);
     }
     return 6;
-  };
-
-  const renderSmartGrid = (images, isShimmer = false) => {
-    const count = images.length;
-
-    if (count === 1) {
-      return (
-        <div className="flex justify-center">
-          <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl">
-            {isShimmer ? (
-              <ShimmerCard index={0} />
-            ) : (
-              <ApodImageCard image={images[0]} index={0} />
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    if (count === 2) {
-      return (
-        <div className="flex flex-col lg:flex-row justify-center gap-4 sm:gap-6 lg:gap-8">
-          {images.map((image, index) => (
-            <div
-              key={isShimmer ? index : `${image.date}-${index}`}
-              className="w-full max-w-md lg:max-w-lg xl:max-w-xl"
-            >
-              {isShimmer ? (
-                <ShimmerCard index={index} />
-              ) : (
-                <ApodImageCard image={image} index={index} />
-              )}
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    if (count === 3) {
-      return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {images.map((image, index) =>
-            isShimmer ? (
-              <ShimmerCard key={index} index={index} />
-            ) : (
-              <ApodImageCard
-                key={`${image.date}-${index}`}
-                image={image}
-                index={index}
-              />
-            )
-          )}
-        </div>
-      );
-    }
-
-    return (
-      <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-        {/* All images in a consistent grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {images.map((image, index) =>
-            isShimmer ? (
-              <ShimmerCard key={index} index={index} />
-            ) : (
-              <ApodImageCard
-                key={`${image.date}-${index}`}
-                image={image}
-                index={index}
-              />
-            )
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const ShimmerCard = ({ index = 0 }) => {
-    const getDelayClass = (index) => {
-      const delays = ["", "delay-75", "delay-150", "delay-300", "delay-500"];
-      return delays[Math.min(index, delays.length - 1)] || "delay-500";
-    };
-
-    const animationDelay = getDelayClass(index);
-
-    return (
-      <div
-        className={`bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden 
-                      transition-all duration-500 ease-out animate-fade-in-up ${animationDelay}`}
-      >
-        <div className="relative h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 overflow-hidden">
-          <Shimmer className="w-full h-full" />
-        </div>
-
-        <div className="p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4">
-          <Shimmer className="h-6 sm:h-7 lg:h-8 w-3/4 rounded" />
-
-          <div className="space-y-2">
-            <Shimmer className="h-4 w-full rounded" />
-            <Shimmer className="h-4 w-5/6 rounded" />
-            <Shimmer className="h-4 w-4/5 rounded" />
-          </div>
-
-          <div className="pt-2">
-            <Shimmer className="h-10 sm:h-12 w-32 sm:w-36 rounded-xl" />
-          </div>
-        </div>
-      </div>
-    );
   };
 
   return (
@@ -240,34 +130,35 @@ function ApodPage() {
 
         <section className="mb-12">
           {shouldShowShimmer && (
-            <div className="px-4 sm:px-6 lg:px-0">
-              {renderSmartGrid(
-                Array.from({ length: getExpectedImageCount() }),
-                true
-              )}
+            <div className="px-4 sm:px-6">
+              <SmartGrid
+                images={Array.from({ length: getExpectedImageCount() })}
+                isShimmer={true}
+                cardType="apod"
+              />
             </div>
           )}
 
           {error && (
-            <div className="px-4 sm:px-6 lg:px-0">
+            <div className="px-4 sm:px-6">
               <div className="bg-red-400/20 border border-red-400/50 rounded-xl p-5 text-center my-5">
-                <p>Unable to fetch images. Please try again.</p>
+                <p>{error}</p>
               </div>
             </div>
           )}
 
-          {showDefault && !loading && !error && normalizedData.length > 0 && (
-            <div className="px-4 sm:px-6 lg:px-0">
+          {showDefault && !loading && !error && normalisedData.length > 0 && (
+            <div className="px-4 sm:px-6">
               <div className="flex justify-center">
                 <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl">
-                  <ApodImageCard image={normalizedData[0]} />
+                  <ApodImageCard image={normalisedData[0]} />
                 </div>
               </div>
             </div>
           )}
 
-          {shouldShowResults && normalizedData.length === 0 && (
-            <div className="px-4 sm:px-6 lg:px-0">
+          {shouldShowResults && normalisedData.length === 0 && (
+            <div className="px-4 sm:px-6">
               <div className="text-center py-20 opacity-70">
                 <h3 className="text-2xl font-semibold mb-2">No images found</h3>
                 <p className="text-lg">
@@ -279,9 +170,9 @@ function ApodPage() {
             </div>
           )}
 
-          {shouldShowResults && normalizedData.length > 0 && (
-            <div className="px-4 sm:px-6 lg:px-0">
-              {renderSmartGrid(normalizedData)}
+          {shouldShowResults && normalisedData.length > 0 && (
+            <div className="px-4 sm:px-6">
+              <SmartGrid images={normalisedData} cardType="apod" />
             </div>
           )}
         </section>

@@ -5,116 +5,93 @@ import {
   getLatestPhotosFromAMarsRover,
   getRoversManifest,
   getPhotosByEarthDate,
-  getPhotosBySol
-} from "../services/http.js";
+  getPhotosBySol,
+} from "../services/marsService.js";
 
 export function useLatestPhotos(roverName) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     if (!roverName) return;
 
-    let timeoutId;
-    let isMounted = true;
+    let isCancelled = false;
+    let retryTimeout;
 
-    const loadData = async (currentRetry = 0) => {
-      if (!isMounted) return;
+    async function loadData() {
+      if (isCancelled) return;
 
       setLoading(true);
-      if (currentRetry === 0) {
-        setError(null);
-        setRetryCount(0);
-      }
+      setError(null);
 
       try {
-        const marsRoversLatestData = await getLatestPhotosFromAMarsRover(
-          roverName
-        );
-        if (isMounted) {
+        const marsRoversLatestData = await getLatestPhotosFromAMarsRover(roverName);
+        if (!isCancelled) {
           setData(marsRoversLatestData);
           setError(null);
-          setRetryCount(0);
-          setLoading(false);
         }
       } catch (err) {
-        if (isMounted) {
+        if (!isCancelled) {
           setError(err);
-          setRetryCount(currentRetry + 1);
-
-          timeoutId = setTimeout(() => {
-            if (isMounted) {
-              loadData(currentRetry + 1);
-            }
-          }, 10000);
+          retryTimeout = setTimeout(loadData, 10000); // Retry every 10 seconds
         }
+      } finally {
+        if (!isCancelled) setLoading(false);
       }
-    };
+    }
 
     loadData();
 
     return () => {
-      isMounted = false;
-      if (timeoutId) clearTimeout(timeoutId);
+      isCancelled = true;
+      clearTimeout(retryTimeout);
     };
   }, [roverName]);
 
-  return { data, loading, error, retryCount };
+  return { data, loading, error };
 }
 
 export function useActiveRovers() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    let timeoutId;
-    let isMounted = true;
+    let isCancelled = false;
+    let retryTimeout;
 
-    const fetchActiveRovers = async (currentRetry = 0) => {
-      if (!isMounted) return;
+    async function fetchActiveRovers() {
+      if (isCancelled) return;
 
       setLoading(true);
-      if (currentRetry === 0) {
-        setError(null);
-        setRetryCount(0);
-      }
+      setError(null);
 
       try {
         const rovers = await getActiveRovers();
-        if (isMounted) {
+        if (!isCancelled) {
           setData(rovers);
           setError(null);
-          setRetryCount(0);
-          setLoading(false);
         }
       } catch (err) {
-        if (isMounted) {
+        if (!isCancelled) {
           setError(err);
-          setRetryCount(currentRetry + 1);
-
-          timeoutId = setTimeout(() => {
-            if (isMounted) {
-              fetchActiveRovers(currentRetry + 1);
-            }
-          }, 10000);
+          retryTimeout = setTimeout(fetchActiveRovers, 10000);
         }
+      } finally {
+        if (!isCancelled) setLoading(false);
       }
-    };
+    }
 
     fetchActiveRovers();
 
-    // Cleanup function
     return () => {
-      isMounted = false;
-      if (timeoutId) clearTimeout(timeoutId);
+      isCancelled = true;
+      clearTimeout(retryTimeout);
     };
   }, []);
 
-  return { data, loading, error, retryCount };
+  return { data, loading, error };
 }
 
 export function useRoverManifest(roverName) {
@@ -125,20 +102,37 @@ export function useRoverManifest(roverName) {
   useEffect(() => {
     if (!roverName) return;
 
+    let isCancelled = false;
+    let retryTimeout;
+
     async function fetchRoverInfo() {
+      if (isCancelled) return;
+
       setLoading(true);
       setError(null);
+
       try {
         const info = await getRoversManifest(roverName);
-        setData(info);
+        if (!isCancelled) {
+          setData(info);
+          setError(null);
+        }
       } catch (err) {
-        setError(err);
+        if (!isCancelled) {
+          setError(err);
+          retryTimeout = setTimeout(fetchRoverInfo, 10000);
+        }
       } finally {
-        setLoading(false);
+        if (!isCancelled) setLoading(false);
       }
     }
 
     fetchRoverInfo();
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(retryTimeout);
+    };
   }, [roverName]);
 
   return { data, loading, error };
@@ -152,24 +146,37 @@ export function usePhotosByEarthDate({ roverName, earth_date, camera }) {
   useEffect(() => {
     if (!roverName || !earth_date) return;
 
+    let isCancelled = false;
+    let retryTimeout;
+
     async function fetchPhotos() {
+      if (isCancelled) return;
+
       setLoading(true);
       setError(null);
+
       try {
-        const photos = await getPhotosByEarthDate({
-          roverName,
-          earth_date,
-          camera,
-        });
-        setData(photos);
+        const photos = await getPhotosByEarthDate({ roverName, earth_date, camera });
+        if (!isCancelled) {
+          setData(photos);
+          setError(null);
+        }
       } catch (err) {
-        setError(err);
+        if (!isCancelled) {
+          setError(err);
+          retryTimeout = setTimeout(fetchPhotos, 10000);
+        }
       } finally {
-        setLoading(false);
+        if (!isCancelled) setLoading(false);
       }
     }
 
     fetchPhotos();
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(retryTimeout);
+    };
   }, [roverName, earth_date, camera]);
 
   return { data, loading, error };
@@ -183,24 +190,37 @@ export function usePhotosBySol({ roverName, sol, camera }) {
   useEffect(() => {
     if (!roverName || !sol) return;
 
+    let isCancelled = false;
+    let retryTimeout;
+
     async function fetchPhotos() {
+      if (isCancelled) return;
+
       setLoading(true);
       setError(null);
+
       try {
-        const photos = await getPhotosBySol({
-          roverName,
-          sol,
-          camera,
-        });
-        setData(photos);
+        const photos = await getPhotosBySol({ roverName, sol, camera });
+        if (!isCancelled) {
+          setData(photos);
+          setError(null);
+        }
       } catch (err) {
-        setError(err);
+        if (!isCancelled) {
+          setError(err);
+          retryTimeout = setTimeout(fetchPhotos, 10000);
+        }
       } finally {
-        setLoading(false);
+        if (!isCancelled) setLoading(false);
       }
     }
 
     fetchPhotos();
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(retryTimeout);
+    };
   }, [roverName, sol, camera]);
 
   return { data, loading, error };

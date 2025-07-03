@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getRandomFacts } from "../services/http.js";
+import { getRandomFacts } from "../services/geminiService.js";
 
 export function useRandomFacts() {
   const [data, setData] = useState(null);

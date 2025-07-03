@@ -6,6 +6,8 @@ import logger from "morgan";
 import express from "express";
 import cookieParser from "cookie-parser";
 
+import { updateCacheAndPreventRenderSleep } from "./jobs/scheduler.js";
+
 var app = express();
 
 app.use(logger("dev"));
@@ -14,6 +16,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(cors({ origin: "http://localhost:5173" }));
+
+updateCacheAndPreventRenderSleep();
 
 app.use("/api", apiRoutes);
 

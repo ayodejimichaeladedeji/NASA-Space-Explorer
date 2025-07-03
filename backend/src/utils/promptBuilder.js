@@ -33,7 +33,7 @@ export function buildGenerateFactPrompt(topics) {
     },
   ];
 
-  let prompt = `You are an expert at generating concise, *highly unique*, and genuinely fascinating space facts.
+  let prompt = `You are an expert at generating concise, *highly unique*, and genuinely fascinating space facts. Each fact must be no longer than 20 words.
                 Your primary task is to generate exactly one *completely distinct* and *absolutely non-repetitive* interesting fact for each of the provided topics.
                 Each fact should be surprising, lesser-known, or offer a new perspective.
                 The output MUST be a JSON array of objects. Each object in the array MUST have two keys: "topic" (string) and "fact" (string).

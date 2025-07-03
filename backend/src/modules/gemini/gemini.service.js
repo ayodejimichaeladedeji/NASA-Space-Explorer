@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import spaceTopics from "../../config/spaceTopics.js";
+import { withCache } from "../../utils/cacheWrapper.js";
 import { buildGenerateFactPrompt } from "../../utils/promptBuilder.js";
 
 class GeminiService {
@@ -8,24 +9,29 @@ class GeminiService {
   }
 
   async generateSpaceFacts() {
-    const prompt = buildGenerateFactPrompt(spaceTopics);
+    const ttl = 21600;
+    const cacheKey = `random_space_facts`;
 
-    const response = await this.gemini.models.generateContent({
-      model: process.env.GEMINI_MODEL,
-      contents: [{ text: prompt }],
-      config: {
-        temperature: 0.9,
-        topP: 0.9,
-        frequencyPenalty: 1.0,
-        presencePenalty: 0.5
-      },
+    return withCache(cacheKey, ttl, async () => {
+      const prompt = buildGenerateFactPrompt(spaceTopics);
+
+      const response = await this.gemini.models.generateContent({
+        model: process.env.GEMINI_MODEL,
+        contents: [{ text: prompt }],
+        config: {
+          temperature: 0.9,
+          topP: 0.9,
+          frequencyPenalty: 1.0,
+          presencePenalty: 0.5,
+        },
+      });
+      const text = response.text;
+      const cleaned = text
+        .replace(/^```json\s*/i, "")
+        .replace(/```$/, "")
+        .trim();
+      return JSON.parse(cleaned);
     });
-    const text = response.text;
-    const cleaned = text
-      .replace(/^```json\s*/i, "")
-      .replace(/```$/, "")
-      .trim();
-    return JSON.parse(cleaned);
   }
 }
 

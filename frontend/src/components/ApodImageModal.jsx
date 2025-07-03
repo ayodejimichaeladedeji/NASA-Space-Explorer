@@ -63,9 +63,7 @@ function ApodImageModal({ image, isOpen, onClose }) {
     });
   };
 
-  const hasHdUrl = image.hdurl && image.hdurl !== image.url;
   const imageUrl = image.url || image.hdurl;
-  const hdUrl = hasHdUrl ? image.hdurl : image.url;
 
   const handleImageLoad = (e) => {
     const img = e.target;
@@ -133,7 +131,7 @@ function ApodImageModal({ image, isOpen, onClose }) {
         )}
 
         <img
-          src={hdUrl}
+          src={image.hdurl}
           alt={image.title || "APOD Image"}
           loading="lazy"
           className={`max-w-full max-h-full object-contain transition-opacity duration-300 ${
@@ -141,11 +139,6 @@ function ApodImageModal({ image, isOpen, onClose }) {
           }`}
           onLoad={() => setImageLoaded(true)}
           onClick={() => setShowFullscreen(false)}
-          onError={(e) => {
-            if (hasHdUrl && e.target.src !== image.url) {
-              e.target.src = image.url;
-            }
-          }}
         />
       </div>
     );
@@ -193,11 +186,6 @@ function ApodImageModal({ image, isOpen, onClose }) {
                     : "w-full h-full object-cover"
                 }`}
                 onLoad={handleImageLoad}
-                onError={(e) => {
-                  if (hasHdUrl && e.target.src !== image.url) {
-                    e.target.src = image.url;
-                  }
-                }}
                 style={
                   window.innerWidth >= 1280
                     ? {
@@ -277,34 +265,6 @@ function ApodImageModal({ image, isOpen, onClose }) {
               }`}
             >
               <div className="flex flex-col sm:flex-row xl:flex-col gap-2 xl:gap-3">
-                <a
-                  href={hdUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 
-                           px-4 xl:px-6 py-2.5 xl:py-3 text-sm xl:text-base
-                           bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
-                           text-white font-semibold rounded-lg xl:rounded-xl 
-                           transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/30 
-                           active:scale-95
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                  <span>{hasHdUrl ? "View HD Picture" : "View Picture"}</span>
-                  <svg
-                    className="w-3 h-3 xl:w-4 xl:h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
-                </a>
-
                 <button
                   onClick={onClose}
                   className={`px-4 xl:px-6 py-2.5 xl:py-3 text-sm xl:text-base font-semibold 
