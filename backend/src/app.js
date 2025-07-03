@@ -1,7 +1,7 @@
 import errorHandler from "./middlewares/errorHandler.js";
 import apiRoutes from "./modules/index.routes.js";
 
-import cors from 'cors';
+import cors from "cors";
 import logger from "morgan";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -15,7 +15,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(cors({ origin: "http://localhost:5173" }));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://nasa-space-explorer-eight.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+  })
+);
 
 updateCacheAndPreventRenderSleep();
 
