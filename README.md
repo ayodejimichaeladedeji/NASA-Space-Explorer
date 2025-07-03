@@ -66,6 +66,7 @@ THE GEMINI MODEL CAN BE CONFIGURED TO USE ANY MODEL OF YOUR CHOICE
 
 #### Configuration - FRONTEND
 
-```env
 Create a `.env` file in the `frontend` directory and add the following environment variables. Replace the placeholder values with your actual API keys and other configurations:
+```env
 VITE_API_BASE_URL=URL_AND_PORT_WHERE_YOUR_BACKEND_IS_RUNNING_ON
+```
