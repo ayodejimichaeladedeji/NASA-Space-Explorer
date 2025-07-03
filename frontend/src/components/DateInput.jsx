@@ -9,12 +9,6 @@ function DateInput({ id, name, date, onChange, maxDate }) {
 
   return (
     <div className="flex flex-col gap-3 sm:gap-2 w-[280px] sm:w-80 sm:min-w-48 mx-auto">
-      <label
-        htmlFor={id}
-        className={`mb-1 text-sm ${isDark ? "text-white/90" : "text-black/90"}`}
-      >
-        {name}
-      </label>
       <DatePicker
         id={id}
         selected={date ? new Date(date) : null}
