@@ -1,7 +1,5 @@
 # NASA Space Explorer
 
-## Your Gateway to the Cosmos
-
 ### Project Overview
 
 The NASA Space Explorer is an interactive web application designed to bring the wonders of space closer to you. It serves as a dynamic portal to explore official NASA data and discover fascinating facts about the universe, making space education accessible and engaging. This project integrates directly with official NASA APIs for live data and leverages the advanced capabilities of the Gemini LLM for unique factual content, providing a rich and responsive user experience.
@@ -29,7 +27,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 #### Prerequisites
 
 * Node.js (LTS version recommended)
-* npm (Node Package Manager) or Yarn
+* npm (Node Package Manager)
 
 #### Installation
 
@@ -52,7 +50,6 @@ Follow these instructions to get a copy of the project up and running on your lo
     ```
 
 #### Configuration - BACKEND
-
 Create a `.env` file in the `backend` directory and add the following environment variables. Replace the placeholder values with your actual API keys and other configurations:
 
 ```env
@@ -65,8 +62,11 @@ NODE_ENV=development
 GEMINI_MODEL=gemini-2.0-flash
 
 THE GEMINI MODEL CAN BE CONFIGURED TO USE ANY MODEL OF YOUR CHOICE
+```
 
-#### Configuration - BACKEND
+#### Configuration - FRONTEND
 
 Create a `.env` file in the `frontend` directory and add the following environment variables. Replace the placeholder values with your actual API keys and other configurations:
+```env
 VITE_API_BASE_URL=URL_AND_PORT_WHERE_YOUR_BACKEND_IS_RUNNING_ON
+```
