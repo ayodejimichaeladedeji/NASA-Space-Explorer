@@ -66,7 +66,7 @@ function BrowseByDatePage() {
   // Delay hiding the date input to allow iOS to register the change
   setTimeout(() => {
     setDate(selectedDate);
-  }, 3000); // 100ms is enough for iOS to register the change
+  }, 10000); // 100ms is enough for iOS to register the change
 }
 
   useEffect(() => {
