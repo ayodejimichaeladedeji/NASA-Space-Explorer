@@ -17,7 +17,7 @@ import {
 function BrowseByDatePage() {
   const { isDark } = useContext(ThemeContext);
 
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(null);
   const [cameras, setCameras] = useState([]);
   const [roverName, setRoverName] = useState();
   const [selectedCamera, setSelectedCamera] = useState("");
