@@ -98,10 +98,10 @@ function RandomFactCard() {
       </div>
 
       <div className="absolute bottom-0 left-0 z-20 p-4 sm:p-6 w-full max-w-[90vw]">
-        <p className="inline-block px-3 py-1 rounded-full text-sm sm:text-base font-semibold tracking-wider mb-3 bg-gradient-to-r from-red-400 to-cyan-400 text-white">
+        <p className="inline-block px-3 py-1 rounded-full text-xs sm:text-base font-semibold tracking-wider mb-3 bg-gradient-to-r from-red-400 to-cyan-400 text-white">
           {currentFactItem?.topic}
         </p>
-        <p className="text-base sm:text-lg lg:text-xl text-white opacity-90 leading-relaxed capitalize">
+        <p className="text-sm sm:text-lg lg:text-xl text-white opacity-90 leading-relaxed capitalize">
           {currentFactItem?.fact}
         </p>
       </div>
