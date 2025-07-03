@@ -19,7 +19,7 @@ function DateInput({ id, name, date, onChange, maxDate }) {
         id={id}
         max={maxDate}
         {...(isValidDate ? { value: date } : { defaultValue: "" })}
-        onChange={(e) => onChange(e.target.value)}
+        onClick={(e) => onChange(e.target.value)}
         className={`w-full px-2 py-2 sm:py-2 sm:px-4 border rounded-xl bg-white/10 text-base transition-all backdrop-blur-sm
           duration-300 focus:outline-none focus:border-teal-400 focus:ring-3 focus:ring-teal-400/30 disabled:opacity-50 
           disabled:cursor-not-allowed ${isDark ? "border-white/20" : "border-black/20"}`}
