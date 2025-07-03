@@ -63,8 +63,11 @@ function BrowseByDatePage() {
   }
 
   function handleDateChange(selectedDate) {
+  // Delay hiding the date input to allow iOS to register the change
+  setTimeout(() => {
     setDate(selectedDate);
-  }
+  }, 100); // 100ms is enough for iOS to register the change
+}
 
   useEffect(() => {
     if (roverInformation?.photo_manifest?.photos) {
